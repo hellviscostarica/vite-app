@@ -15,3 +15,6 @@ If you are developing a production application, we recommend using TypeScript wi
 https://www.udemy.com/course/react-cero-experto/learn/lecture/31975004#overview
 maancuza@gmail.com
 41
+
+create a login and registration with vite react and express mongo
+
