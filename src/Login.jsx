@@ -1,56 +1,86 @@
 import { useState } from 'react';
-import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from './firebase';
 
-export default function Login() {
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [message, setMessage] = useState('');
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!email || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', form);
-      localStorage.setItem('token', res.data.token);
-      setMessage('Login successful!');
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User logged in');
     } catch (err) {
-      setMessage('Login failed.');
+      console.error('Login error:', err);
+      switch (err.code) {
+        case 'auth/user-not-found':
+          setError('No user found with this email.');
+          break;
+        case 'auth/wrong-password':
+          setError('Incorrect password.');
+          break;
+        case 'auth/invalid-email':
+          setError('Invalid email format.');
+          break;
+        default:
+          setError('Login failed: ' + err.message);
+          break;
+      }
     }
   };
 
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-md-10">
-          <form onSubmit={handleSubmit} className="card p-4 shadow-sm">
+        <div className="col-12">
+          <form onSubmit={handleLogin} className="card p-4 shadow-sm">
             <h2 className="mb-4 text-center">Ingresar</h2>
+
             <div className="mb-3">
-              <label htmlFor="username" className="form-label">Username</label>
+              <label htmlFor="login-email" className="form-label">Email</label>
               <input
-                id="username"
-                name="username"
+                id="login-email"
+                name="email"
                 className="form-control"
-                placeholder="Enter username"
-                onChange={handleChange}
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password</label>
+              <label htmlFor="login-password" className="form-label">Password</label>
               <input
-                id="password"
+                id="login-password"
                 name="password"
                 type="password"
                 className="form-control"
-                placeholder="Enter password"
-                onChange={handleChange}
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+
             <button type="submit" className="btn btn-primary w-100">Login</button>
-            {message && <div className="alert alert-info mt-3 text-center">{message}</div>}
+
+            {error && (
+              <div className="alert alert-danger mt-3 text-center">{error}</div>
+            )}
           </form>
         </div>
       </div>
     </div>
   );
 }
+
+export default Login;
