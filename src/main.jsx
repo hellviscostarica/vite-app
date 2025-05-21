@@ -6,8 +6,11 @@ import './index.css';
 import Header from './HeaderComponent.jsx';
 import Register from './Register';
 import Login from './Login';
+import Dashboard from './Dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { initializeApp } from 'firebase/app';
+import { AppRouter } from './router'; 
+
 
 // Optional: Firebase config (required if you're using Firebase)
   const firebaseConfig = {
@@ -28,20 +31,9 @@ const rootElement = document.getElementById('root');
 if (rootElement) {
   createRoot(rootElement).render(
     <React.StrictMode>
-      <div className="container my-5">
-        {/* Header */}
-        <Header />
 
-        {/* Side-by-side Login and Register */}
-        <div className="row mt-5">
-          <div className="col-md-6 d-flex justify-content-center">
-            <Login />
-          </div>
-          <div className="col-md-6 d-flex justify-content-center">
-            <Register />
-          </div>
-        </div>
-      </div>
+<AppRouter />
+      
     </React.StrictMode>
   );
 } else {

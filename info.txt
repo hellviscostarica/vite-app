@@ -4,9 +4,11 @@
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 
 
-https://www.udemy.com/course/react-cero-experto/learn/lecture/31975004#overview
+https://www.udemy.com/course/react-cero-experto/learn/lecture/32004280#overview
 maancuza@gmail.com
 41
 
 create a login and registration with vite react and express mongo
 
+npm install react-router-dom
+axios
